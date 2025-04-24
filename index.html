@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مراحل بسيطة</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .active {
+      display: flex;
+    }
+
+    .big-text {
+      font-size: 40px;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .next-button {
+      background-color: white;
+      color: #764ba2;
+      padding: 15px 30px;
+      border-radius: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    .next-button:hover {
+      background-color: #f0f0f0;
+    }
+
+    #page2 {
+      background: linear-gradient(to right, #667eea, #764ba2);
+    }
+
+    #page3 {
+      background-color: #000;
+    }
+
+    video {
+      width: 90vw;
+      max-width: 400px;
+      border: 5px solid #fff;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- الصفحة 1 -->
+  <div class="page active" id="page1" onclick="showPage(2)">
+    <div style="font-size: 30px;">مرحباً، اسمي حيدر</div>
+  </div>
+
+  <!-- الصفحة 2 -->
+  <div class="page" id="page2">
+    <div class="big-text">الحيوان اللي يشبهك هو...</div>
+    <div class="next-button" onclick="showPage(3)">التالي</div>
+  </div>
+
+  <!-- الصفحة 3 -->
+  <div class="page" id="page3">
+    <video id="video" autoplay playsinline></video>
+  </div>
+
+  <script>
+    function showPage(pageNumber) {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.getElementById('page' + pageNumber).classList.add('active');
+      
+      if (pageNumber === 3) {
+        startCamera();
+      }
+    }
+
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user" },
+          audio: false
+        });
+        document.getElementById('video').srcObject = stream;
+      } catch (error) {
+        alert("فشل في فتح الكاميرا: " + error.message);
+      }
+    }
+  </script>
+
+</body>
+</html>
